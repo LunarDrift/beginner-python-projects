@@ -3,8 +3,34 @@ class ExpenseTracker:
         self.expenses = []
 
     def add_expense(self):
-        # TODO: ask for amount, category, description and append to self.expenses
-        pass
+        print("\n----- Add Expense -----")
+
+        # Ask user for amount, make sure valid number
+        try:
+            amount = float(input("Enter amount: $"))
+            if amount <= 0:
+                print("Amount must be greater than zero.")
+                return
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+            return
+        
+        # Ask for category and description(optional)
+        category = input("Enter category(Food, Transport, Bills, Entertainment, Misc): ")
+        description = input("Enter short description (optional): ")
+
+        # Make expense entry into dict
+        expense = {
+            "amount": amount,
+            "category": category,
+            "description": description if description else "No description"
+        }
+
+        # Add to list of expenses
+        self.expenses.append(expense)
+
+        # Confirmation message
+        print(f"Added ${amount:.2f} - {category} ({description})")
 
     def view_expenses(self):
         # TODO: print all expenses
