@@ -46,6 +46,9 @@ class ExpenseTracker:
 
         # Confirmation message
         print(f"Added ${amount:.2f} - {category} ({description})")
+        
+        # Automatically save after adding expense
+        self.save_expenses()
 
     def view_expenses(self):
         # Check if list is empty
@@ -95,6 +98,7 @@ class ExpenseTracker:
     
 def main():
     tracker = ExpenseTracker() # Creates object of the class
+    tracker.load_expenses() # Automatically load saved expenses on start
 
     while True:
         choice = tracker.menu()
