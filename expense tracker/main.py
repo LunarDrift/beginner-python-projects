@@ -1,3 +1,4 @@
+import os
 import json
 
 class ExpenseTracker:
@@ -5,17 +6,26 @@ class ExpenseTracker:
         self.expenses = []
 
     def save_expenses(self, filename="expenses.json"):
+        # Force Python to save in scripts folder
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        full_path = os.path.join(script_dir, filename)
         with open(filename, "w") as f:
             json.dump(self.expenses, f, indent=4)
-        print("Expenses saved.")
+        print(f"Expenses saved to: {full_path}.")
 
     def load_expenses(self, filename="expenses.json"):
+        # Force Python to load file from scripts folder
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        full_path = os.path.join(script_dir, filename)
+
         try:
             with open(filename, "r") as f:
                 self.expenses = json.load(f)
-            print("Expenses loaded.")
+            print("\nExpenses loaded successfully.")
         except FileNotFoundError:
-            print("Could not find file 'expenses.json'.")    
+            print("\nCould not find file 'expenses.json'.")
+        except json.JSONDecodeError:
+            print("\nExpenses file is corrupted. Starting with empty list.")
 
     def add_expense(self):
         print("\n----- Add Expense -----")
@@ -114,7 +124,7 @@ def main():
         elif choice == "4":
             tracker.show_total()
         elif choice == "5":
-            print("Exiting Program.")
+            print("\nExiting Program.")
             break
         else:
             print("Invalid choice. Try again.")
