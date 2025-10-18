@@ -33,8 +33,13 @@ class ExpenseTracker:
         print(f"Added ${amount:.2f} - {category} ({description})")
 
     def view_expenses(self):
-        # TODO: print all expenses
-        pass
+        # Check if list is empty
+        if not self.expenses:
+            print("\nNo expenses added.")
+            return
+        # Enumerate - adds counter to iterable(expense list) starting with 1
+        for i, expense in enumerate(self.expenses, start=1):
+            print(f"{i}. ${expense['amount']:.2f} - {expense['category']} ({expense['description']})")
 
     def filter_by_category(self):
         # TODO: filter expenses by category
@@ -45,7 +50,7 @@ class ExpenseTracker:
         pass
 
     def menu(self):
-        print("\n----- Expense Tracker -----")
+        print("\n----- Expense Tracker -----\n")
         print("1. Add Expense")
         print("2. View All Expenses")
         print("3. Filter by Category")
