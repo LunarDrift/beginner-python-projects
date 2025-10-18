@@ -1,6 +1,21 @@
+import json
+
 class ExpenseTracker:
     def __init__(self):
         self.expenses = []
+
+    def save_expenses(self, filename="expenses.json"):
+        with open(filename, "w") as f:
+            json.dump(self.expenses, f, indent=4)
+        print("Expenses saved.")
+
+    def load_expenses(self, filename="expenses.json"):
+        try:
+            with open(filename, "r") as f:
+                self.expenses = json.load(f)
+            print("Expenses loaded.")
+        except FileNotFoundError:
+            print("Could not find file 'expenses.json'.")    
 
     def add_expense(self):
         print("\n----- Add Expense -----")
@@ -16,8 +31,8 @@ class ExpenseTracker:
             return
         
         # Ask for category and description(optional)
-        category = input("Enter category(Food, Transport, Bills, Entertainment, Misc): ")
-        description = input("Enter short description (optional): ")
+        category = input("Enter category(Food, Transport, Bills, Entertainment, Misc): ").title()
+        description = input("Enter short description (optional): ").title()
 
         # Make expense entry into dict
         expense = {
@@ -37,17 +52,36 @@ class ExpenseTracker:
         if not self.expenses:
             print("\nNo expenses added.")
             return
-        # Enumerate - adds counter to iterable(expense list) starting with 1
+        
+        print("\n----- All Expenses -----")
+        # Enumerate - adds counter to iterable(expense list) starting at 1
         for i, expense in enumerate(self.expenses, start=1):
             print(f"{i}. ${expense['amount']:.2f} - {expense['category']} ({expense['description']})")
+        print("------------------------\n")
 
-    def filter_by_category(self):
-        # TODO: filter expenses by category
-        pass
+    def filter_by_category(self, category):
+        return [
+            expense for expense in self.expenses
+            if expense['category'].lower() == category.lower()
+        ]
+
+    def show_filtered(self, filtered, category):
+        if not filtered:
+            print(f"\nNo expenses found in category '{category}'.")
+            return
+        
+        print(f"\nExpenses in category '{category}'.")
+        total = 0
+        for i, expense in enumerate(filtered, start=1):
+            print(f"{i}. ${expense['amount']:.2f} - {expense['description']}")
+            total += expense['amount']
+
+        print(f"\nTotal spent in '{category}: ${total:.2f}")
 
     def show_total(self):
-        # TODO: sum all amounts and print total
-        pass
+        # Sum each expense 'amount' and print
+        total = sum(expense['amount'] for expense in self.expenses)
+        print(f"\nTotal Spent: ${total:.2f}")
 
     def menu(self):
         print("\n----- Expense Tracker -----\n")
@@ -70,7 +104,9 @@ def main():
         elif choice == "2":
             tracker.view_expenses()
         elif choice == "3":
-            tracker.filter_by_category()
+            category = input("Enter a category to filter(Food, Transport, Bills, Entertainment, Misc): ")
+            filtered = tracker.filter_by_category(category)
+            tracker.show_filtered(filtered, category)
         elif choice == "4":
             tracker.show_total()
         elif choice == "5":
