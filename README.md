@@ -13,3 +13,4 @@ Collection of small beginner Python projects I've made while learning
 - **To-Do List**: Add, edit, or delete tasks from a simple console-based list.
 - **War! Game**: Players compare cards. Higher card wins.
 - **Expense Tracker**: Personal expense tracker. Saves and loads expenses from JSON file.
+- **Tic Tac Toe**: Simple CLI version of Tic Tac Toe.
